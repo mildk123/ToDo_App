@@ -6,7 +6,7 @@ const mongoose = require('./server/config/db');
 var db = mongoose.connection;
 
 const path = require('path');
-const port = process.env.PORT || 5000;
+var port = process.env.PORT || 5000;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
@@ -14,7 +14,7 @@ db.once('open', function () {
 });
 
 app.listen(port || 5000, () => {
-  console.log("Hamara server shareef is working!")
+  console.log("App is running on port " + port);
 })
 
 // get all todos
