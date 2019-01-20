@@ -1,35 +1,5 @@
-// const express = require('express');
-
-// const app = express();
-
-// const path = require('path');
-// const port = process.env.PORT || 5000;
-
-// //Static file declaration
-// app.use(express.static(path.join(__dirname, 'client/build')));
-
-// //production mode
-// if(process.env.NODE_ENV === 'production') {
-//   app.use(express.static(path.join(__dirname, 'client/build')));
-//   //
-//   app.get('*', (req, res) => {
-//     res.sendfile(path.join(__dirname = 'client/build/index.html'));
-//   }) 
-// }
-
-// //build mode
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname+'/client/public/index.html'));
-// })
-
-// //start server
-// app.listen(port, (req, res) => {
-//   console.log( `server listening on port: ${port}`);
-// })
-
-
 const express = require('express');
-
+const cors = require('cors')
 const app = express();
 const Todos = require('./server/model/Todos')
 const mongoose = require('./server/config/db');
@@ -76,7 +46,7 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/client/public/index.html'));
 })
 
-
+app.use(cors());
 app.use(express.json());
 
 app.use('/', require('./server/routes/index'))
