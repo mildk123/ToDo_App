@@ -13,9 +13,7 @@ db.once('open', function () {
   console.log("db connected!")
 });
 
-app.listen(port || 5000, () => {
-  console.log("App is running on port " + port);
-})
+
 
 // get all todos
 app.get('/todos/getAll', (req, res) => {
@@ -41,6 +39,11 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
+
+app.listen(process.env.PORT || 3000, function(){
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+});
+
 //build mode
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/client/public/index.html'));
@@ -50,3 +53,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/', require('./server/routes/index'))
+
+app.listen(port || 5000, () => {
+  console.log("App is running on port " + port);
+})
