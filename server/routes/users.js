@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Users = require('../model/Users');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+// const bcrypt = require('bcrypt');
+// const jwt = require('jsonwebtoken');
 
 router.get('/getAll', async (req, res) => {
     try {
@@ -24,46 +24,46 @@ router.post('/addUser', async (req, res) => {
     }
 })
 
-router.post('/register', (req, res) => {
-    const user = req.body;
-    const hash = hashPassword(user.password);
+// router.post('/register', (req, res) => {
+//     const user = req.body;
+//     const hash = hashPassword(user.password);
 
-    const newUser = new Users({email: user.email, password: hash});
+//     const newUser = new Users({email: user.email, password: hash});
 
-    newUser.save()
-    .then(() => res.send({message: "User registered successfully!"}))
-    .catch(e => res.send(500, {message: e.message}));
-})
+//     newUser.save()
+//     .then(() => res.send({message: "User registered successfully!"}))
+//     .catch(e => res.send(500, {message: e.message}));
+// })
 
-router.post('/login', async (req, res) => {
-    //Check Email
-    const user = await Users.find({email: req.body.email});
+// router.post('/login', async (req, res) => {
+//     //Check Email
+//     const user = await Users.find({email: req.body.email});
 
-    if(!user.length) {
-        res.send(500, {message: "User not found!"});
-        return;
-    }
+//     if(!user.length) {
+//         res.send(500, {message: "User not found!"});
+//         return;
+//     }
 
-    //Compare Email
-    const passwordMatched = bcrypt.compareSync(req.body.password, user[0].password);
+//     //Compare Email
+//     const passwordMatched = bcrypt.compareSync(req.body.password, user[0].password);
 
-    if(!passwordMatched) {
-        res.send(500, {message: "Incorrect Email/Password!"});
-        return;
-    }
+//     if(!passwordMatched) {
+//         res.send(500, {message: "Incorrect Email/Password!"});
+//         return;
+//     }
 
-    //Generate Token
-    const token = jwt.sign({user: user[0]}, 'anySecretKey');
-    res.send({token});
-})
+//     //Generate Token
+//     const token = jwt.sign({user: user[0]}, 'anySecretKey');
+//     res.send({token});
+// })
 
 
 
-function hashPassword(password) {
-    var salt = bcrypt.genSaltSync(10);
-    var hash = bcrypt.hashSync(password, salt);
+// function hashPassword(password) {
+//     var salt = bcrypt.genSaltSync(10);
+//     var hash = bcrypt.hashSync(password, salt);
 
-    return hash;
-}
+//     return hash;
+// }
 
 module.exports = router;
