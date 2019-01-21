@@ -2,17 +2,14 @@ const express = require('express');
 const cors = require('cors')
 const app = express();
 const Todos = require('./server/model/Todos')
-const mongoose = require('./server/config/db');
-var db = mongoose.connection;
+// const mongoose = require('./server/config/db');
+const mongoose = require('mongoose');
 
 const path = require('path');
 var port = process.env.PORT || 5000;
 
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
-  console.log("db connected!")
-});
 
+mongoose.connect('mongodb://mildk123:apple123@ds261644.mlab.com:61644/todolist', { useNewUrlParser: true });
 
 
 // get all todos
