@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const Todos = require('../model/Todos');
-// const bcrypt = require('bcrypt')
 
 router.get("/getAll", (req, res) => {
     console.log('requesting todos')

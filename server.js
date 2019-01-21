@@ -4,9 +4,11 @@ const app = express();
 const Todos = require('./server/model/Todos')
 // const mongoose = require('./server/config/db');
 const mongoose = require('mongoose');
+var indexRouter = require('./server/routes/index');
 
 const path = require('path');
 var port = process.env.PORT || 5000;
+
 
 
 mongoose.connect('mongodb://mildk123:apple123@ds261644.mlab.com:61644/todolist', { useNewUrlParser: true });
@@ -51,7 +53,7 @@ app.listen(process.env.PORT || 3000, function(){
 app.use(cors());
 app.use(express.json());
 
-app.use('/', require('./server/routes/index'))
+app.use('/', indexRouter)
 
 app.listen(port || 5000, () => {
   console.log("App is running on port " + port);

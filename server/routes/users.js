@@ -10,7 +10,7 @@ router.get('/getAll', async (req, res) => {
         res.send(users);
     } catch(e) {
         res.send(500, {message: e.message});
-    }
+    }br
 })
 
 router.post('/addUser', async (req, res) => {
