@@ -16,13 +16,15 @@ app.use(cors());
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
+db.once('open', () => {
     console.log("db connected!")
 });
 
-app.listen(port || 5000, () => {
-  console.log("Hamara server shareef is working!", port)
-})
+
+app.set( 'port', ( port || 5000 ));
+app.listen( app.get( 'port' ), () => {
+  console.log( 'Node server is running on port ' + app.get( 'port' ));
+  })
 
 
 //Static file declaration
@@ -33,7 +35,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.get('*', (request, response) => {
-	response.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+	response.sendFile(path.join(__dirname, 'client/build'));
 });
 
 ///////////////// APIs ////////////////////
