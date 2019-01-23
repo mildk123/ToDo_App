@@ -13,6 +13,7 @@ var port = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cors());
 
+app.set('port', (port || 5000));
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -21,21 +22,18 @@ db.once('open', () => {
 });
 
 
-app.set('port', (port || 5000));
-app.listen(app.get('port'), () => {
-  console.log('Node server is running on port ' + app.get('port'));
-})
-
-
 //Static file declaration
 app.use(express.static(path.join(__dirname, '/client/build')));
 
 if (process.env.NODE_ENV === 'production') {
+  console.log('1',process.env.NODE_ENV );
+  
   app.use(express.static('client/build'));
   app.get('*', (request, response) => {
     response.sendFile(path.join(__dirname, '/client/build/index.html'));
   });
 }
+
 
 ///////////////// APIs ////////////////////
 // Get all todos
@@ -77,6 +75,9 @@ app.delete("/todos/remove", (req, res) => {
     .catch(e => res.send({ message: e.message }))
 })
 
+app.listen(app.get('port'), () => {
+  console.log('Node server is running on port ' + app.get('port'));
+})
 
 module.exports = app;
 
