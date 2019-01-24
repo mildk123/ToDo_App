@@ -56,9 +56,14 @@ export default class FormDialog extends React.Component {
                         lastname: lastname,
                     })
                 })
-                .then(response => response.json())
-                .then(data => alert(data))
-                .catch(err => err.message)
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data)
+                        if (data !== null) {
+                            this.props.history.push('/Home')
+                        }
+                    })
+                    .catch(err => err.message)
             })
         } else {
             alert('Please fill all the boxes!')
@@ -85,10 +90,15 @@ export default class FormDialog extends React.Component {
                         password: password,
                     })
                 })
-                
-                .then(response => response.json())
-                .then(data => alert(data))
-                .catch(err => err.message)
+
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data)
+                        if (data !== null) {
+                            this.props.history.push('/Home')
+                        }
+                    })
+                    .catch(err => err.message)
             })
         } else {
             alert('Please fill all the boxes!')
