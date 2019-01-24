@@ -11,6 +11,7 @@ const mongoose = require('./config/db');
 const path = require('path');
 
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken');
 
 var port = process.env.PORT || 5000;
 
@@ -113,6 +114,7 @@ app.post("/auth/login", async (req, res) => {
 
     //Generate Token
     const token = jwt.sign({user: user[0]}, 'anySecretKey');
+    
     res.send({token});
 })
 
