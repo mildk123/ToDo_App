@@ -1,6 +1,8 @@
 
 const express = require('express');
 const Todos = require('./model/Todos')
+const UserReg = require('./model/Users')
+const UserLogin = require('./model/Users')
 
 const app = express();
 
@@ -26,8 +28,8 @@ db.once('open', () => {
 app.use(express.static(path.join(__dirname, '/client/build')));
 
 if (process.env.NODE_ENV === 'production') {
-  console.log('1',process.env.NODE_ENV );
-  
+  console.log('1', process.env.NODE_ENV);
+
   app.use(express.static('client/build'));
   app.get('*', (request, response) => {
     response.sendFile(path.join(__dirname, '/client/build/index.html'));
@@ -73,6 +75,28 @@ app.delete("/todos/remove", (req, res) => {
   Todos.deleteOne({ title: req.body.title })
     .then(result => res.send(result))
     .catch(e => res.send({ message: e.message }))
+})
+
+
+// ///////////////// Authentication ////////////////////
+app.post("/auth/reg", (req, res) => {
+  console.log('registering User');
+
+  const register = new UserReg(req.body);
+
+  register.save()
+    .then(() => res.send({ message: "User inserted successfully!" }))
+    .catch(e => res.send({ message: e.message }))
+})
+
+app.post("/auth/login", (req, res) => {
+  console.log('registering User');
+
+  const login = new UserLogin(req.body);
+  console.log(req.body)
+  // login.save()
+  //   .then(() => res.send({ message: "User inserted successfully!" }))
+  //   .catch(e => res.send({ message: e.message }))
 })
 
 app.listen(app.get('port'), () => {

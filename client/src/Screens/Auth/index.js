@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 
 // Login Dialog 
-import LoginDialog from '../../Helper/LoginDialog/'
+import Dialog from '../../Helper/Dialog/'
 
 // Material Button
 import Button from '@material-ui/core/Button';
@@ -18,7 +18,7 @@ class AuthScreen extends Component {
     constructor() {
         super()
 
-        this.LoginDialogs = React.createRef()
+        this.Dialogs = React.createRef()
     }
 
 
@@ -35,11 +35,11 @@ class AuthScreen extends Component {
     }
 
     showLogin = () => {
-        this.LoginDialogs.current.handleClickOpen();
+        this.Dialogs.current.handleClickOpen();
     }
 
     showRegister= () => {
-        this.LoginDialogs.current.handleRegisterForm();
+        this.Dialogs.current.handleRegisterForm();
     }
 
     render() {
@@ -47,7 +47,7 @@ class AuthScreen extends Component {
             <div className="myComponent">
                 <h1>ToDo App</h1>
 
-                <LoginDialog ref={this.LoginDialogs} />
+                <Dialog ref={this.Dialogs} />
 
                 <div className='btnDiv'>
                     <Button className="btn" onClick={this.showLogin} variant="contained" color="secondary" >
