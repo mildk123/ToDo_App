@@ -47,7 +47,7 @@ class AuthScreen extends Component {
             <div className="myComponent">
                 <h1>ToDo App</h1>
 
-                <Dialog ref={this.Dialogs} />
+                <Dialog ref={this.Dialogs} {...this.props}/>
 
                 <div className='btnDiv'>
                     <Button className="btn" onClick={this.showLogin} variant="contained" color="secondary" >

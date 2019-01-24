@@ -44,7 +44,7 @@ export default class FormDialog extends React.Component {
                 registerForm: null,
                 isloading: true
             }, () => {
-                fetch("/auth/reg", {
+                fetch("/auth/register", {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json",
@@ -58,7 +58,7 @@ export default class FormDialog extends React.Component {
                 })
                     .then(response => response.json())
                     .then(data => {
-                        alert(data)
+                        console.log(data.message)
                         if (data !== null) {
                             this.props.history.push('/Home')
                         }
@@ -93,7 +93,7 @@ export default class FormDialog extends React.Component {
 
                     .then(response => response.json())
                     .then(data => {
-                        alert(data)
+                        console.log(data)
                         if (data !== null) {
                             this.props.history.push('/Home')
                         }
