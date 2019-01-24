@@ -9,6 +9,9 @@ const cors = require('cors')
 const mongoose = require('./config/db');
 
 const path = require('path');
+
+const bcrypt = require('bcryptjs')
+
 var port = process.env.PORT || 5000;
 
 app.use(express.json());
@@ -89,7 +92,7 @@ app.post("/auth/reg", (req, res) => {
     .catch(e => res.send(500, { message: e.message }));
 })
 
-app.post("/auth/login", (req, res) => {
+app.post("/auth/login", async (req, res) => {
   console.log('Authenticating User');
 
   //Check Email
@@ -101,7 +104,7 @@ app.post("/auth/login", (req, res) => {
     }
 
     //Compare Email
-    const passwordMatched = bcrypt.compareSync(req.body.password, user[0].password);
+    const passwordMatched = await bcrypt.compareSync(req.body.password, user[0].password);
 
     if(!passwordMatched) {
         res.send(500, {message: "Incorrect Email/Password!"});
