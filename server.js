@@ -27,17 +27,17 @@ db.once('open', () => {
 });
 
 
-//Static file declaration
-// app.use(express.static(path.join(__dirname, '/client/build')));
+// Static file declaration
+app.use(express.static(path.join(__dirname, '/client/build')));
 
-// if (process.env.NODE_ENV === 'production') {
-//   console.log('1', process.env.NODE_ENV);
+if (process.env.NODE_ENV === 'production') {
+  console.log('1', process.env.NODE_ENV);
 
-//   app.use(express.static('client/build'));
-//   app.get('*', (request, response) => {
-//     response.sendFile(path.join(__dirname, '/client/build/index.html'));
-//   });
-// }
+  app.use(express.static('client/build'));
+  app.get('*', (request, response) => {
+    response.sendFile(path.join(__dirname, '/client/build/index.html'));
+  });
+}
 
 
 ///////////////// APIs ////////////////////
