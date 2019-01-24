@@ -1,8 +1,7 @@
 
 const express = require('express');
 const Todos = require('./model/Todos')
-const UserReg = require('./model/Users')
-const UserLogin = require('./model/Users')
+const Users = require('./model/Users')
 
 const app = express();
 
@@ -80,24 +79,47 @@ app.delete("/todos/remove", (req, res) => {
 
 // ///////////////// Authentication ////////////////////
 app.post("/auth/reg", (req, res) => {
-  console.log('registering User');
+  const user = req.body;
+  const hash = hashPassword(user.password);
 
-  const register = new UserReg(req.body);
+  const newUser = new Users({ email: user.email, password: hash });
 
-  register.save()
-    .then(() => res.send({ message: "User inserted successfully!" }))
-    .catch(e => res.send({ message: e.message }))
+  newUser.save()
+    .then(() => res.send({ message: "User registered successfully!" }))
+    .catch(e => res.send(500, { message: e.message }));
 })
 
 app.post("/auth/login", (req, res) => {
-  console.log('registering User');
+  console.log('Authenticating User');
 
-  const login = new UserLogin(req.body);
-  console.log(req.body)
-  // login.save()
-  //   .then(() => res.send({ message: "User inserted successfully!" }))
-  //   .catch(e => res.send({ message: e.message }))
+  //Check Email
+    const user = await Users.find({email: req.body.email});
+
+    if(!user.length) {
+        res.send(500, {message: "User not found!"});
+        return;
+    }
+
+    //Compare Email
+    const passwordMatched = bcrypt.compareSync(req.body.password, user[0].password);
+
+    if(!passwordMatched) {
+        res.send(500, {message: "Incorrect Email/Password!"});
+        return;
+    }
+
+    //Generate Token
+    const token = jwt.sign({user: user[0]}, 'anySecretKey');
+    res.send({token});
 })
+
+function hashPassword(password) {
+  var salt = bcrypt.genSaltSync(10);
+  var hash = bcrypt.hashSync(password, salt);
+
+  return hash;
+}
+
 
 app.listen(app.get('port'), () => {
   console.log('Node server is running on port ' + app.get('port'));
