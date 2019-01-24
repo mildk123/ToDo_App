@@ -1,7 +1,7 @@
 
 var mongoose = require('mongoose');
 
-var UserRegSchema = new mongoose.Schema({
+var UserSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
@@ -18,6 +18,6 @@ var UserRegSchema = new mongoose.Schema({
     type : String,
   }
 });
-var UserReg = mongoose.model('UserReg', UserRegSchema);
+var User = mongoose.model('User', UserSchema);
 
-module.exports = UserReg;
+module.exports = User;

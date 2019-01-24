@@ -28,16 +28,16 @@ db.once('open', () => {
 
 
 //Static file declaration
-app.use(express.static(path.join(__dirname, '/client/build')));
+// app.use(express.static(path.join(__dirname, '/client/build')));
 
-if (process.env.NODE_ENV === 'production') {
-  console.log('1', process.env.NODE_ENV);
+// if (process.env.NODE_ENV === 'production') {
+//   console.log('1', process.env.NODE_ENV);
 
-  app.use(express.static('client/build'));
-  app.get('*', (request, response) => {
-    response.sendFile(path.join(__dirname, '/client/build/index.html'));
-  });
-}
+//   app.use(express.static('client/build'));
+//   app.get('*', (request, response) => {
+//     response.sendFile(path.join(__dirname, '/client/build/index.html'));
+//   });
+// }
 
 
 ///////////////// APIs ////////////////////
@@ -82,7 +82,7 @@ app.delete("/todos/remove", (req, res) => {
 
 
 // ///////////////// Authentication ////////////////////
-app.post("/auth/reg", (req, res) => {
+app.post("/auth/register", (req, res) => {
   const user = req.body;
   const hash = hashPassword(user.password);
 
@@ -90,7 +90,7 @@ app.post("/auth/reg", (req, res) => {
 
   newUser.save()
     .then(() => res.send({ message: "User registered successfully!" }))
-    .catch(e => res.send(500, { message: e.message }));
+    .catch(e => res.status(500).send({ message: e.message }));
 })
 
 app.post("/auth/login", async (req, res) => {
@@ -100,7 +100,7 @@ app.post("/auth/login", async (req, res) => {
     const user = await Users.find({email: req.body.email});
 
     if(!user.length) {
-        res.send(500, {message: "User not found!"});
+      res.status(500).send({message: "User not found!"});
         return;
     }
 
@@ -108,12 +108,13 @@ app.post("/auth/login", async (req, res) => {
     const passwordMatched = await bcrypt.compareSync(req.body.password, user[0].password);
 
     if(!passwordMatched) {
-        res.send(500, {message: "Incorrect Email/Password!"});
+        res.status(500).send({message: "Incorrect Email/Password!"});
         return;
     }
 
     //Generate Token
-    const token = jwt.sign({user: user[0]}, 'anySecretKey');
+    const token = await jwt.sign({user: user[0]}, 'anySecretKey');
+    console.log(token);
     
     res.send({token});
 })
