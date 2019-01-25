@@ -37,6 +37,10 @@ if (process.env.NODE_ENV === 'production') {
   app.get('*', (request, response) => {
     response.sendFile(path.join(__dirname, '/client/build/index.html'));
   });
+}else{
+  app.get('*', (request, response) => {
+    response.sendFile(path.join(__dirname, '/client/public/index.html'));
+  });
 }
 
 
@@ -89,8 +93,8 @@ app.post("/auth/register", (req, res) => {
   const newUser = new Users({ email: user.email, password: hash });
 
   newUser.save()
-    .then(() => res.send({ message: "User registered successfully!" }))
-    .catch(e => res.status(500).send({ message: e.message }));
+    .then(() => res.send({ message: "User registered successfully!", registered: true }))
+    .catch(e => res.status(500).send({ message: e.message, registered: false }));
 })
 
 app.post("/auth/login", async (req, res) => {
@@ -100,7 +104,7 @@ app.post("/auth/login", async (req, res) => {
     const user = await Users.find({email: req.body.email});
 
     if(!user.length) {
-      res.status(500).send({message: "User not found!"});
+      res.status(500).send({message: "User not found!", match : false});
         return;
     }
 
@@ -108,15 +112,14 @@ app.post("/auth/login", async (req, res) => {
     const passwordMatched = await bcrypt.compareSync(req.body.password, user[0].password);
 
     if(!passwordMatched) {
-        res.status(500).send({message: "Incorrect Email/Password!"});
+        res.status(500).send({message: "Incorrect Email/Password!", match : false});
         return;
     }
 
     //Generate Token
     const token = await jwt.sign({user: user[0]}, 'anySecretKey');
-    console.log(token);
     
-    res.send({token});
+    res.send({token : token, match : true});
 })
 
 function hashPassword(password) {

@@ -59,8 +59,10 @@ export default class FormDialog extends React.Component {
                     .then(response => response.json())
                     .then(data => {
                         console.log(data.message)
-                        if (data !== null) {
+                        if (data.registered === true) {
                             this.props.history.push('/Home')
+                        }else {
+                            alert(data.message)
                         }
                     })
                     .catch(err => err.message)
@@ -71,9 +73,9 @@ export default class FormDialog extends React.Component {
     }
 
     handleLogin = () => {
-        // Login
         let email = this.state.email;
         let password = this.state.password;
+        // Login
         if (email && password) {
 
             this.setState({
@@ -94,8 +96,10 @@ export default class FormDialog extends React.Component {
                     .then(response => response.json())
                     .then(data => {
                         console.log(data)
-                        if (data !== null) {
+                        if (data.match === true) {
                             this.props.history.push('/Home')
+                        }else {
+                            alert(data.message)
                         }
                     })
                     .catch(err => err.message)
