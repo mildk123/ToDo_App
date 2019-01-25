@@ -28,20 +28,7 @@ db.once('open', () => {
 
 
 // Static file declaration
-app.use(express.static(path.join(__dirname, '/client/build')));
-
-if (process.env.NODE_ENV === 'production') {
-  console.log('1', process.env.NODE_ENV);
-
-  app.use(express.static('client/build'));
-  app.get('*', (request, response) => {
-    response.sendFile(path.join(__dirname, '/client/build/index.html'));
-  });
-}else{
-  app.get('*', (request, response) => {
-    response.sendFile(path.join(__dirname, '/client/public/index.html'));
-  });
-}
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 
 ///////////////// APIs ////////////////////
@@ -121,6 +108,11 @@ app.post("/auth/login", async (req, res) => {
     
     res.send({token : token, match : true});
 })
+
+// Handles any requests that don't match the ones above
+app.get('*', (req,res) =>{
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
 
 function hashPassword(password) {
   var salt = bcrypt.genSaltSync(10);
